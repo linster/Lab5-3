@@ -89,6 +89,10 @@ public class BogoPicGenActivity extends Activity {
 	//The result should be saved in newBMP
 	//Also should be reflected in the imageButton
 	private void setBogoPic() {
+		Toast.makeText(this, "Generating photo", Toast.LENGTH_SHORT).show();
+		newBMP = BogoPicGen.generateBitmap(400, 400);
+		ImageButton ib = (ImageButton) findViewById(R.id.TakeAPhoto);
+		ib.setImageBitmap(newBMP);
 		//TODO: Add your code here:
 		//TODO: Add your code here:
 		//TODO: Add your code here:
@@ -104,6 +108,11 @@ public class BogoPicGenActivity extends Activity {
 			try {
 				if (intent.getExtras() != null) {    
 					if (okPressed) {
+						Uri uri  = (Uri) intent.getExtras().get(MediaStore.EXTRA_OUTPUT);
+						OutputStream out = new FileOutputStream(new File(uri.getPath()));
+						newBMP.compress(Bitmap.CompressFormat.JPEG, 75, out);
+						out.close();
+						setResult(RESULT_OK);
 						//TODO: Add your code here:
 						//TODO: Add your code here:
 						//TODO: Add your code here:

@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
         return true;
     }
     
-
+    private final int CAMERA_ACTIVITY_REQUEST_CODE = 12345;
     //This method creates an intent. 
     //It is told that we need camera action, and the results should be saved in a location that is sent to the intent.
     public void takeAPhoto() {
@@ -59,6 +59,10 @@ public class MainActivity extends Activity {
 		File imageFile = new File(imagePathAndFileName);
 		imageFileUri = Uri.fromFile(imageFile);
 		
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
+		startActivityForResult(intent, this.CAMERA_ACTIVITY_REQUEST_CODE);
+		
 		//TODO: Add your code here ...
 		//TODO: Add your code here ...
 		//TODO: Add your code here ...
@@ -68,10 +72,13 @@ public class MainActivity extends Activity {
     //This method is run after returning back from camera activity:
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
-    	if (requestCode == 12345){
+    	if (requestCode == this.CAMERA_ACTIVITY_REQUEST_CODE){
 			TextView tv = (TextView)findViewById(R.id.status);
 			
 			if (resultCode == RESULT_OK){
+				tv.setText("Photo completed!");
+				ImageButton ib = (ImageButton)findViewById(R.id.TakeAPhoto);
+				ib.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
 			//TODO: Add your code here ...
 			//TODO: Add your code here ...
 			//TODO: Add your code here ...
